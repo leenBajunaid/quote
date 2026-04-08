@@ -502,7 +502,8 @@ async function submitForm(){
         message: body
       })
     });
-    if(res.ok){
+    var data=await res.json();
+    if(data.success){
       var firstName = (a.contact_name||'').split(' ')[0] || '';
       document.getElementById('form-area').innerHTML = '<div class="success"><div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div><h2>'+t('successTitle')+', '+firstName+'!</h2><p>'+t('successBody')+'</p><p class="close-note">'+t('closeNote')+'</p></div>';
     } else { throw new Error(); }
