@@ -491,14 +491,14 @@ async function submitForm(){
   document.getElementById('form-area').innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">'+t('sending')+'</div></div>';
 
   try{
-    var res = await fetch('https://formspree.io/f/xgopqyeq',{
+    var res = await fetch('https://api.web3forms.com/submit',{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body: JSON.stringify({
-        _subject: 'Quote request — '+(a.company||'Unknown')+' · '+(a.num_employees||'?')+' employees',
-        name: a.contact_name,
-        _replyto: a.email,
-        company: a.company,
+        access_key: '6d4e4b7e-f37d-41e4-b278-403a7843758e',
+        subject: 'Quote — '+(a.company||'Unknown'),
+        name: a.name,
+        email: a.email,
         message: body
       })
     });
