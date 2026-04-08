@@ -479,10 +479,10 @@ async function submitForm(){
   document.getElementById('form-area').innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">'+t('sending')+'</div></div>';
 
   try{
-    var res = await fetch('https://api.web3forms.com/submit',{
+    var res = await fetch('https://formspree.io/f/YOUR_FORM_ID',{
       method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body: JSON.stringify({access_key: "6d4e4b7e-f37d-41e4-b278-403a7843758e",
+      body: JSON.stringify({
         _subject: 'Quote request — '+(a.company||'Unknown')+' · '+(a.num_employees||'?')+' employees',
         name: a.contact_name,
         _replyto: a.email,
@@ -503,4 +503,3 @@ render();
 </script>
 </body>
 </html>
-
