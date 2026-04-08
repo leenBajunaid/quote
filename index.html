@@ -275,6 +275,29 @@ var steps = [
     {val:'quarter',en:'Within 1 to 3 months',ar:'خلال 1 إلى 3 أشهر'},
     {val:'planning',en:'Just planning for now',ar:'مجرد تخطيط في الوقت الحالي'}
   ]},
+  {id:'servers',type:'choice',
+   en:{q:'Do you have servers in your office?',howto:'A server is a computer that runs 24 hours a day storing company files or running software for everyone. Usually kept in a dedicated room or cabinet. Ask your IT person — if unsure choose No.'},
+   ar:{q:'هل لديك خوادم في مكتبك؟',howto:'الخادم هو كمبيوتر يعمل 24 ساعة ويخزن ملفات الشركة. عادةً في غرفة خاصة. اسأل مسؤول تقنية المعلومات.'},
+   options:[
+    {val:'yes-1-2',en:'Yes — 1 or 2 servers',ar:'نعم — خادم أو خادمان'},
+    {val:'yes-3-5',en:'Yes — 3 to 5 servers',ar:'نعم — من 3 إلى 5 خوادم'},
+    {val:'yes-5+',en:'Yes — more than 5 servers',ar:'نعم — أكثر من 5 خوادم'},
+    {val:'cloud',en:'No — everything is on the cloud',ar:'لا — كل شيء على السحابة',ensub:'Google, Microsoft 365, AWS etc.',arsub:'Google، Microsoft 365، AWS'},
+    {val:'no',en:'No servers at all',ar:'لا يوجد خوادم'},
+    {val:'unsure',en:'Not sure',ar:'غير متأكد'}
+  ]},
+  {id:'digital',type:'multi',
+   en:{q:'Does your company have any of the following?',howto:'This tells us if your systems are accessible from the internet — which needs extra firewall protection.'},
+   ar:{q:'هل تمتلك شركتك أياً مما يلي؟',howto:'هذا يخبرنا إذا كانت أنظمتك متاحة من الإنترنت — مما يتطلب حماية إضافية.'},
+   options:[
+    {val:'website',en:'A company website',ar:'موقع إلكتروني للشركة'},
+    {val:'ecommerce',en:'An online store',ar:'متجر إلكتروني'},
+    {val:'mobile_app',en:'A mobile app',ar:'تطبيق جوال'},
+    {val:'erp',en:'An ERP or accounting system',ar:'نظام ERP أو محاسبة'},
+    {val:'email_server',en:'Our own email server',ar:'خادم بريد إلكتروني خاص'},
+    {val:'customer_portal',en:'A customer login portal',ar:'بوابة تسجيل دخول للعملاء'},
+    {val:'none',en:'None of the above',ar:'لا شيء مما سبق'}
+  ]},
   {id:'notes',type:'textarea',
    en:{q:'Anything else we should know?',howto:'Tell us anything relevant — opening a new office, had a security incident, have a server room, need cameras on the network, IT person available for site visit. Leave blank if nothing to add.',ph:'Optional — type here or leave blank'},
    ar:{q:'هل هناك أي شيء آخر يجب أن نعرفه؟',howto:'أخبرنا بأي شيء ذي صلة — فتح مكتب جديد، تعرضتم لحادثة أمنية، لديكم غرفة خوادم، تحتاجون كاميرات على الشبكة. اتركه فارغاً إذا لم يكن هناك شيء.',ph:'اختياري — اكتب هنا أو اتركه فارغاً'}}
