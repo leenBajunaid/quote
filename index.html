@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Needs Assessment — Attar Software Engineering</title>
+<style>
+:root{--bg:#ffffff;--bg-secondary:#f7f7f7;--bg-card:#ffffff;--border:#e5e5e5;--border-hover:#b0b0b0;--text-primary:#0f0f0f;--text-secondary:#6b6b6b;--text-hint:#9a9a9a;--accent:#0f0f0f;--accent-text:#ffffff;--selected-bg:#0f0f0f;--selected-text:#ffffff;--hint-bg:#f4f4f4;--hint-border:#e0e0e0;--progress-bg:#ebebeb;--progress-fill:#0f0f0f;--input-bg:#ffffff;--shadow:0 2px 32px rgba(0,0,0,0.08);--toggle-bg:#e0e0e0;--intro-bg:#f7f8fa;--intro-border:#e8e9ec}
+[data-theme="dark"]{--bg:#0f0f0f;--bg-secondary:#1a1a1a;--bg-card:#161616;--border:#2a2a2a;--border-hover:#484848;--text-primary:#f0f0f0;--text-secondary:#999;--text-hint:#555;--accent:#f0f0f0;--accent-text:#0f0f0f;--selected-bg:#f0f0f0;--selected-text:#0f0f0f;--hint-bg:#1c1c1c;--hint-border:#2e2e2e;--progress-bg:#252525;--progress-fill:#f0f0f0;--input-bg:#1a1a1a;--shadow:0 2px 32px rgba(0,0,0,0.5);--toggle-bg:#2a2a2a;--intro-bg:#141414;--intro-border:#252525}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1.25rem 4rem;transition:background .3s,color .3s}
+[lang="ar"] body,[dir="rtl"]{font-family:'Segoe UI',Tahoma,'Arabic Typesetting',sans-serif}
+.top-bar{width:100%;max-width:620px;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.logo-wrap{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.logo-img{width:48px;height:48px;object-fit:contain;border-radius:6px}
+.logo-text{display:flex;flex-direction:column}
+.logo-name{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.2}
+.logo-sub{font-size:11px;color:var(--text-hint);letter-spacing:.04em}
+.top-controls{display:flex;align-items:center;gap:.6rem}
+.ctrl-btn{height:32px;padding:0 .85rem;border:1px solid var(--border);border-radius:99px;background:transparent;font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.ctrl-btn:hover{border-color:var(--border-hover);color:var(--text-primary)}
+.theme-toggle{width:38px;height:22px;background:var(--toggle-bg);border-radius:99px;border:none;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0}
+.theme-toggle::after{content:'';position:absolute;top:4px;left:4px;width:14px;height:14px;border-radius:50%;background:var(--text-primary);transition:transform .3s}
+[data-theme="dark"] .theme-toggle::after{transform:translateX(16px)}
+.intro-card{background:var(--intro-bg);border:1px solid var(--intro-border);border-radius:20px;padding:2rem 2.25rem;max-width:620px;width:100%;margin-bottom:1.25rem;transition:background .3s,border .3s}
+.intro-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-hint);margin-bottom:.65rem}
+.intro-title{font-size:26px;font-weight:800;color:var(--text-primary);line-height:1.25;letter-spacing:-.02em;margin-bottom:.85rem}
+.intro-title span{color:var(--text-secondary)}
+.intro-body{font-size:15px;color:var(--text-secondary);line-height:1.75;margin-bottom:1.25rem}
+.intro-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem}
+.intro-step{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;transition:background .3s,border .3s}
+.intro-step-num{font-size:11px;font-weight:700;color:var(--text-hint);letter-spacing:.06em;margin-bottom:.3rem}
+.intro-step-label{font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.3}
+.intro-footer{display:flex;align-items:center;justify-content:space-between;padding-top:1.1rem;border-top:1px solid var(--intro-border)}
+.intro-time{font-size:13px;color:var(--text-hint);display:flex;align-items:center;gap:.4rem}
+.intro-link{font-size:13px;color:var(--text-hint);text-decoration:none;display:flex;align-items:center;gap:.35rem;transition:color .15s}
+.intro-link:hover{color:var(--text-secondary)}
+.dot{width:6px;height:6px;background:var(--text-hint);border-radius:50%;flex-shrink:0}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:2.25rem 2.25rem 1.75rem;max-width:620px;width:100%;box-shadow:var(--shadow);transition:background .3s,border .3s,box-shadow .3s}
+.prog-wrap{margin-bottom:2rem}
+.prog-bar{background:var(--progress-bg);border-radius:99px;height:3px;overflow:hidden}
+.prog-fill{background:var(--progress-fill);height:3px;border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.prog-meta{display:flex;justify-content:space-between;margin-top:.55rem}
+.prog-label{font-size:12px;color:var(--text-hint)}
+.prog-pct{font-size:12px;color:var(--text-hint)}
+.step-tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-hint);display:block;margin-bottom:.6rem}
+.question{font-size:22px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:.9rem;letter-spacing:-.01em}
+.hint-box{background:var(--hint-bg);border:1px solid var(--hint-border);border-radius:10px;padding:.85rem 1rem;margin-bottom:1.5rem;transition:background .3s,border .3s}
+.hint-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-hint);margin-bottom:.3rem}
+.hint-text{font-size:13.5px;color:var(--text-secondary);line-height:1.65}
+.options{display:flex;flex-direction:column;gap:.45rem}
+.opt{display:flex;align-items:flex-start;gap:.85rem;padding:.95rem 1.1rem;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:border .15s,background .15s,color .15s;font-size:15px;color:var(--text-primary);background:var(--input-bg);text-align:left;width:100%;font-family:inherit}
+[dir="rtl"] .opt{text-align:right}
+.opt:hover{border-color:var(--border-hover);background:var(--bg-secondary)}
+.opt.selected{border-color:var(--selected-bg);background:var(--selected-bg);color:var(--selected-text)}
+.opt-radio{width:18px;height:18px;border:1.5px solid var(--border-hover);border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.opt.selected .opt-radio{border-color:var(--selected-text)}
+.opt-dot{width:8px;height:8px;border-radius:50%;background:var(--selected-text);display:none}
+.opt.selected .opt-dot{display:block}
+.opt-body{display:flex;flex-direction:column;gap:3px;flex:1}
+.opt-sub{font-size:12px;opacity:.55;line-height:1.3}
+.multi-note{font-size:12px;color:var(--text-hint);margin-bottom:.65rem;font-style:italic}
+.check-opt{display:flex;align-items:flex-start;gap:.85rem;padding:.95rem 1.1rem;border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:border .15s,background .15s;font-size:15px;color:var(--text-primary);background:var(--input-bg);width:100%;text-align:left;font-family:inherit}
+[dir="rtl"] .check-opt{text-align:right}
+.check-opt:hover{border-color:var(--border-hover);background:var(--bg-secondary)}
+.check-opt.checked{border-color:var(--border-hover);background:var(--bg-secondary)}
+.check-box{width:18px;height:18px;border:1.5px solid var(--border-hover);border-radius:5px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:var(--input-bg)}
+.check-opt.checked .check-box{background:var(--accent);border-color:var(--accent)}
+.check-mark{color:var(--accent-text);font-size:11px;font-weight:700;display:none}
+.check-opt.checked .check-mark{display:block}
+.text-input,.textarea-input{width:100%;padding:.9rem 1rem;border:1px solid var(--border);border-radius:12px;font-size:15px;color:var(--text-primary);background:var(--input-bg);outline:none;transition:border .15s,background .3s;font-family:inherit;-webkit-appearance:none}
+.text-input:focus,.textarea-input:focus{border-color:var(--border-hover)}
+.textarea-input{resize:vertical;min-height:100px;line-height:1.6}
+.text-input::placeholder,.textarea-input::placeholder{color:var(--text-hint)}
+.nav{display:flex;gap:.65rem;margin-top:1.5rem}
+.btn-back{padding:.8rem 1.1rem;border:1px solid var(--border);border-radius:11px;background:transparent;font-size:14px;cursor:pointer;color:var(--text-secondary);font-family:inherit;transition:all .15s}
+.btn-back:hover{border-color:var(--border-hover);color:var(--text-primary)}
+.btn-next{flex:1;padding:.85rem 1rem;border:none;border-radius:11px;background:var(--accent);color:var(--accent-text);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.btn-next:hover{opacity:.82}
+.skip-wrap{text-align:center;margin-top:.75rem}
+.skip-btn{font-size:13px;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:inherit;padding:.25rem .5rem}
+.skip-btn:hover{color:var(--text-secondary)}
+.success{text-align:center;padding:1rem 0 .5rem}
+.success-icon{width:56px;height:56px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
+.success-icon svg{width:24px;height:24px;stroke:var(--accent-text);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.success h2{font-size:22px;font-weight:700;color:var(--text-primary);margin-bottom:.75rem}
+.success p{font-size:15px;color:var(--text-secondary);line-height:1.7}
+.close-note{margin-top:1.25rem;font-size:13px;color:var(--text-hint)}
+.loading-wrap{text-align:center;padding:2.5rem 0}
+.loading-spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:14px;color:var(--text-secondary)}
+@media(max-width:520px){.card,.intro-card{padding:1.5rem 1.25rem;border-radius:16px}.question{font-size:19px}.intro-title{font-size:21px}.intro-steps{grid-template-columns:1fr}.top-bar{margin-bottom:1.5rem}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a class="logo-wrap" href="https://attarse.com" target="_blank">
+    <img class="logo-img" src="data:image/png;base64,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" alt="ASE Logo">
+    <div class="logo-text">
+      <span class="logo-name">Attar Software Engineering</span>
+      <span class="logo-sub">attarse.com</span>
+    </div>
+  </a>
+  <div class="top-controls">
+    <button class="ctrl-btn" id="lang-btn" onclick="toggleLang()">العربية</button>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"></button>
+  </div>
+</div>
+
+<div class="intro-card" id="intro-card">
+  <div class="intro-eyebrow" id="i-eyebrow">Cybersecurity Assessment</div>
+  <div class="intro-title" id="i-title">Let's find the right <span>security solution</span> for your business.</div>
+  <div class="intro-body" id="i-body">Answer a few simple questions — no technical knowledge required. Our team at Attar Software Engineering will review your answers and send you a detailed, tailored quotation within 1 business day.</div>
+  <div class="intro-steps">
+    <div class="intro-step"><div class="intro-step-num">01</div><div class="intro-step-label" id="i-s1">Answer 13 simple questions</div></div>
+    <div class="intro-step"><div class="intro-step-num">02</div><div class="intro-step-label" id="i-s2">We review your needs</div></div>
+    <div class="intro-step"><div class="intro-step-num">03</div><div class="intro-step-label" id="i-s3">Receive your quotation</div></div>
+  </div>
+  <div class="intro-footer">
+    <div class="intro-time"><div class="dot"></div><span id="i-time">Takes about 3 minutes</span></div>
+    <a class="intro-link" href="https://attarse.com" target="_blank" id="i-link">Visit attarse.com <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+    <div class="prog-meta">
+      <span class="prog-label" id="prog-label">Question 1 of 13</span>
+      <span class="prog-pct" id="prog-pct">0%</span>
+    </div>
+  </div>
+  <div id="form-area"></div>
+</div>
+
+<script>
+var lang = 'en';
+var current = 0;
+var answers = {};
+
+var tr = {
+  en: {
+    langBtn: 'العربية',
+    eyebrow: 'Cybersecurity Assessment',
+    title: "Let's find the right <span>security solution</span> for your business.",
+    body: 'Answer a few simple questions — no technical knowledge required. Our team at Attar Software Engineering will review your answers and send you a detailed, tailored quotation within 1 business day.',
+    s1: 'Answer 13 simple questions', s2: 'We review your needs', s3: 'Receive your quotation',
+    time: 'Takes about 3 minutes', link: 'Visit attarse.com',
+    qof: 'Question', of: 'of',
+    howto: 'How to find this out',
+    multi: 'Select all that apply',
+    back: '← Back', next: 'Continue →', submit: 'Submit my answers →', skip: 'Skip this question',
+    sending: 'Sending your answers…',
+    successTitle: 'Thank you', successBody: 'Your answers have been received. Our team will review your requirements and get back to you within <strong>1 business day</strong> with a tailored quotation.',
+    closeNote: 'You can close this page.',
+    errTitle: 'Could not send', errBody: 'Please take a screenshot and send it to <strong>leen@attarse.com</strong> and we will process your request manually.'
+  },
+  ar: {
+    langBtn: 'English',
+    eyebrow: 'تقييم الأمن السيبراني',
+    title: 'دعنا نجد <span>الحل الأمني المناسب</span> لشركتك.',
+    body: 'أجب على بعض الأسئلة البسيطة — لا تحتاج إلى خلفية تقنية. سيراجع فريق عطار للهندسة البرمجية إجاباتك وسيرسل لك عرض سعر مخصص خلال يوم عمل واحد.',
+    s1: 'أجب على 13 سؤالاً بسيطاً', s2: 'نراجع احتياجاتك', s3: 'تستلم عرض السعر',
+    time: 'يستغرق حوالي 3 دقائق', link: 'زيارة attarse.com',
+    qof: 'السؤال', of: 'من',
+    howto: 'كيف تجد هذه المعلومة',
+    multi: 'اختر كل ما ينطبق',
+    back: 'رجوع ←', next: 'التالي →', submit: 'إرسال إجاباتي →', skip: 'تخطي هذا السؤال',
+    sending: 'جاري إرسال إجاباتك…',
+    successTitle: 'شكراً لك', successBody: 'تم استلام إجاباتك. سيراجع فريقنا متطلباتك ويتواصل معك خلال <strong>يوم عمل واحد</strong> بعرض سعر مخصص.',
+    closeNote: 'يمكنك إغلاق هذه الصفحة.',
+    errTitle: 'تعذر الإرسال', errBody: 'يرجى التقاط لقطة شاشة وإرسالها إلى <strong>leen@attarse.com</strong> وسنعالج طلبك يدوياً.'
+  }
+};
+
+var steps = [
+  {id:'contact_name',type:'text',
+   en:{q:'What is your full name?',howto:'Just your first and last name so we know who to address the quotation to.',ph:'e.g. Mohammed Al-Harbi'},
+   ar:{q:'ما اسمك الكامل؟',howto:'الاسم الأول والأخير فقط حتى نعرف كيف نخاطبك في عرض السعر.',ph:'مثال: محمد الحربي'}},
+  {id:'company',type:'text',
+   en:{q:'What is your company name?',howto:'The official name of your business as it appears on your documents.',ph:'e.g. Al-Harbi Trading Co.'},
+   ar:{q:'ما اسم شركتك؟',howto:'الاسم الرسمي للشركة كما يظهر في وثائقك الرسمية.',ph:'مثال: شركة الحربي للتجارة'}},
+  {id:'email',type:'text',
+   en:{q:'What is your work email?',howto:'We will send your personalized quotation here. Please use your work email if possible.',ph:'e.g. mohammed@company.com'},
+   ar:{q:'ما هو بريدك الإلكتروني العملي؟',howto:'سنرسل عرض السعر المخصص إلى هذا العنوان. استخدم البريد العملي إن أمكن.',ph:'مثال: mohammed@company.com'}},
+  {id:'phone',type:'text',
+   en:{q:'What is your phone number?',howto:'Include your country code. We may call briefly to confirm a detail before sending the quote.',ph:'e.g. +966 5X XXX XXXX'},
+   ar:{q:'ما رقم هاتفك؟',howto:'أضف رمز الدولة. قد نتصل بك للتأكد من تفصيلة قبل إرسال العرض.',ph:'مثال: 966 5X XXX XXXX+'}},
+  {id:'industry',type:'choice',
+   en:{q:'What industry is your company in?',howto:'Different industries have different security requirements. Healthcare and finance for example have strict data protection laws that affect which products we recommend.'},
+   ar:{q:'في أي قطاع تعمل شركتك؟',howto:'لكل قطاع متطلبات أمنية مختلفة. على سبيل المثال، الرعاية الصحية والمالية لها قوانين حماية بيانات صارمة تؤثر على توصياتنا.'},
+   options:[
+    {val:'Government',en:'Government / Public sector',ar:'القطاع الحكومي'},
+    {val:'Healthcare',en:'Healthcare / Medical',ar:'الرعاية الصحية / الطبية',ensub:'Clinics, hospitals, pharmacies',arsub:'عيادات، مستشفيات، صيدليات'},
+    {val:'Finance',en:'Finance / Banking',ar:'المالية / البنوك',ensub:'Including accounting firms',arsub:'بما في ذلك شركات المحاسبة'},
+    {val:'Retail',en:'Retail / E-commerce',ar:'التجزئة / التجارة الإلكترونية',ensub:'If you accept card payments',arsub:'إذا كنت تقبل مدفوعات البطاقات'},
+    {val:'Education',en:'Education',ar:'التعليم',ensub:'Schools, universities',arsub:'مدارس، جامعات، مراكز تدريب'},
+    {val:'Energy',en:'Oil, Gas and Energy',ar:'النفط والغاز والطاقة'},
+    {val:'RealEstate',en:'Real estate / Construction',ar:'العقارات والمقاولات'},
+    {val:'General',en:'General business / Trading',ar:'الأعمال العامة / التجارة'},
+    {val:'Other',en:'Other',ar:'أخرى'}
+  ]},
+  {id:'num_employees',type:'choice',
+   en:{q:'How many people work in your company?',howto:'Count everyone who uses a computer or connects to your network — full time and part time. Check with HR if unsure.'},
+   ar:{q:'كم عدد موظفي شركتك؟',howto:'احسب كل من يستخدم كمبيوتراً أو يتصل بشبكتك — دوام كامل وجزئي. تحقق مع الموارد البشرية إذا لم تكن متأكداً.'},
+   options:[
+    {val:'1-10',en:'1 – 10 people',ar:'1 – 10 أشخاص',ensub:'Very small office',arsub:'مكتب صغير جداً'},
+    {val:'11-50',en:'11 – 50 people',ar:'11 – 50 شخصاً',ensub:'Small business',arsub:'شركة صغيرة'},
+    {val:'51-150',en:'51 – 150 people',ar:'51 – 150 شخصاً',ensub:'Medium business',arsub:'شركة متوسطة'},
+    {val:'151-500',en:'151 – 500 people',ar:'151 – 500 شخصاً',ensub:'Large business',arsub:'شركة كبيرة'},
+    {val:'500+',en:'More than 500 people',ar:'أكثر من 500 شخص',ensub:'Enterprise',arsub:'مؤسسة كبرى'}
+  ]},
+  {id:'num_branches',type:'choice',
+   en:{q:'How many offices or branches do you have?',howto:'Count every physical location — head office, branches, warehouses, showrooms. If everyone is in one building, answer is 1.'},
+   ar:{q:'كم عدد مكاتبك أو فروعك؟',howto:'احسب كل موقع فعلي — المركز الرئيسي، الفروع، المستودعات، المعارض. إذا كان الجميع في مبنى واحد، الإجابة هي 1.'},
+   options:[
+    {val:'1',en:'Just one location',ar:'موقع واحد فقط'},
+    {val:'2-3',en:'2 – 3 locations',ar:'2 – 3 مواقع'},
+    {val:'4-10',en:'4 – 10 locations',ar:'4 – 10 مواقع'},
+    {val:'10+',en:'More than 10 locations',ar:'أكثر من 10 مواقع'}
+  ]},
+  {id:'internet_speed',type:'choice',
+   en:{q:'How fast is your internet connection?',howto:'Check your internet contract or monthly bill — the speed is written on it (e.g. 100 Mbps fiber). You can also call your provider (STC, Mobily, Zain) and ask. If unsure, choose the last option.'},
+   ar:{q:'ما سرعة اتصالك بالإنترنت؟',howto:'تحقق من عقد الإنترنت أو الفاتورة الشهرية — السرعة مكتوبة عليها (مثل 100 ميغابت فايبر). يمكنك أيضاً الاتصال بمزود الخدمة (STC، موبايلي، زين) والسؤال.'},
+   options:[
+    {val:'sub50',en:'Less than 50 Mbps',ar:'أقل من 50 ميغابت',ensub:'Older or basic connection',arsub:'اتصال قديم أو أساسي'},
+    {val:'50-100',en:'50 – 100 Mbps',ar:'50 – 100 ميغابت'},
+    {val:'100-500',en:'100 – 500 Mbps',ar:'100 – 500 ميغابت',ensub:'Most common fiber',arsub:'الأكثر شيوعاً للفايبر'},
+    {val:'500-1000',en:'500 Mbps – 1 Gbps',ar:'500 ميغابت – 1 جيغابت'},
+    {val:'1g+',en:'Above 1 Gbps',ar:'أكثر من 1 جيغابت',ensub:'High speed / enterprise',arsub:'سرعة عالية / مؤسسات'},
+    {val:'unknown',en:"I don't know",ar:'لا أعرف',ensub:"We'll figure it out together",arsub:'سنكتشف ذلك معاً'}
+  ]},
+  {id:'has_firewall',type:'choice',
+   en:{q:'Do you currently have a firewall?',howto:'A firewall is a physical device — usually a small black or grey box — in your server room between your router and your network. Ask your IT person. If you never had one installed, choose No.'},
+   ar:{q:'هل لديك جدار حماية حالياً؟',howto:'جدار الحماية هو جهاز مادي — عادةً صندوق صغير أسود أو رمادي — في غرفة الخوادم بين الراوتر والشبكة. اسأل مسؤول تقنية المعلومات. إذا لم يتم تثبيت أي جهاز من قبل، اختر لا.'},
+   options:[
+    {val:'yes-known',en:'Yes — I know the brand',ar:'نعم — أعرف الماركة'},
+    {val:'yes-unknown',en:'Yes — but I don\'t know the details',ar:'نعم — لكنني لا أعرف التفاصيل'},
+    {val:'no',en:'No firewall installed yet',ar:'لا يوجد جدار حماية بعد'},
+    {val:'unsure',en:'Not sure',ar:'غير متأكد'}
+  ]},
+  {id:'firewall_brand',type:'text',
+   en:{q:'What firewall brand or model do you have?',howto:'Look at the physical device in your server room — the brand name is printed on it (e.g. Cisco, SonicWall, Fortinet). Take a photo if needed and note the model number on the sticker underneath.',ph:'e.g. Cisco ASA 5506, SonicWall TZ400, Fortinet 60E'},
+   ar:{q:'ما ماركة أو موديل جدار الحماية الحالي؟',howto:'انظر إلى الجهاز المادي في غرفة الخوادم — اسم الماركة مطبوع عليه. التقط صورة إذا لزم الأمر ولاحظ رقم الموديل المكتوب على الملصق.',ph:'مثال: Cisco ASA 5506, SonicWall TZ400, Fortinet 60E'},
+   skipIf: function(a){ return a.has_firewall !== 'yes-known'; }},
+  {id:'remote_workers',type:'choice',
+   en:{q:'Do any employees work from outside the office?',howto:'This includes anyone who connects to company systems from home, while traveling, or from another branch. If yes, they need secure VPN access — which affects the firewall model we recommend.'},
+   ar:{q:'هل يعمل أي موظف من خارج المكتب؟',howto:'يشمل ذلك أي شخص يتصل بأنظمة الشركة من المنزل أو أثناء السفر أو من فرع آخر. إذا كانت الإجابة نعم، فهم بحاجة إلى VPN آمن — مما يؤثر على موديل جدار الحماية الذي نوصي به.'},
+   options:[
+    {val:'many',en:'Yes — many work remotely',ar:'نعم — كثيرون يعملون عن بُعد',ensub:'More than 5 people regularly',arsub:'أكثر من 5 أشخاص بانتظام'},
+    {val:'few',en:'Yes — a few occasionally',ar:'نعم — قليلون أحياناً',ensub:'Work from home sometimes',arsub:'يعملون من المنزل أحياناً'},
+    {val:'no',en:'No — everyone is in the office',ar:'لا — الجميع في المكتب دائماً'}
+  ]},
+  {id:'concerns',type:'multi',
+   en:{q:'What are your biggest security concerns?',howto:'Pick whatever worries you or your management the most. No technical knowledge needed — this helps us focus on solving your actual problems.'},
+   ar:{q:'ما هي أكبر مخاوفك الأمنية؟',howto:'اختر ما يقلقك أنت أو إدارتك أكثر. لا تحتاج إلى معرفة تقنية — هذا يساعدنا على التركيز على حل مشاكلك الفعلية.'},
+   options:[
+    {val:'ransomware',en:'Getting hacked or ransomware attack',ar:'التعرض للاختراق أو هجوم الفدية'},
+    {val:'websites',en:'Employees visiting dangerous websites',ar:'الموظفون يزورون مواقع خطرة أو غير لائقة'},
+    {val:'data',en:'Company or customer data being stolen',ar:'سرقة بيانات الشركة أو العملاء'},
+    {val:'remote',en:'Remote workers accessing system unsafely',ar:'الموظفون عن بُعد يصلون للنظام بطريقة غير آمنة'},
+    {val:'compliance',en:'Meeting compliance / government regulations',ar:'الامتثال لوائح الحكومة والجهات التنظيمية'},
+    {val:'slow',en:'Slow or unreliable network',ar:'شبكة بطيئة أو غير موثوقة'},
+    {val:'visibility',en:'No visibility into network activity',ar:'لا توجد رؤية لما يحدث على شبكتنا'},
+    {val:'incident',en:'We already had a security incident',ar:'تعرضنا بالفعل لحادثة أمنية سابقة'}
+  ]},
+  {id:'budget',type:'choice',
+   en:{q:'What is your approximate budget?',howto:'This is just a rough guide — we will not hold you to it. It helps us recommend the right product tier. If unsure, choose the last option.'},
+   ar:{q:'ما هي ميزانيتك التقريبية؟',howto:'هذا مجرد دليل تقريبي — لن نلزمك به. يساعدنا في اقتراح المستوى المناسب من المنتجات. إذا لم تكن متأكداً، اختر الخيار الأخير.'},
+   options:[
+    {val:'u5k',en:'Under ,000',ar:'أقل من 5,000$',ensub:'~18,000 SAR',arsub:'نحو 18,000 ريال'},
+    {val:'5-15k',en:',000 – 5,000',ar:'5,000$ – 15,000$',ensub:'~18,000 – 56,000 SAR',arsub:'نحو 18,000 – 56,000 ريال'},
+    {val:'15-50k',en:'5,000 – 0,000',ar:'15,000$ – 50,000$',ensub:'~56,000 – 187,000 SAR',arsub:'نحو 56,000 – 187,000 ريال'},
+    {val:'50-100k',en:'0,000 – 00,000',ar:'50,000$ – 100,000$',ensub:'~187,000 – 375,000 SAR',arsub:'نحو 187,000 – 375,000 ريال'},
+    {val:'100k+',en:'Above 00,000',ar:'أكثر من 100,000$'},
+    {val:'guidance',en:'I need guidance — show me options',ar:'أحتاج توجيهاً — أرني الخيارات'}
+  ]},
+  {id:'timeline',type:'choice',
+   en:{q:'When do you need this solution ready?',howto:'Give us your realistic target. This helps us prioritize your quote and check product availability.'},
+   ar:{q:'متى تحتاج هذا الحل جاهزاً؟',howto:'أعطنا هدفك الواقعي. هذا يساعدنا على إعطاء أولوية لعرضك والتحقق من توفر المنتجات.'},
+   options:[
+    {val:'urgent',en:'Urgent — within 2 weeks',ar:'عاجل — خلال أسبوعين'},
+    {val:'month',en:'Within 1 month',ar:'خلال شهر واحد'},
+    {val:'quarter',en:'Within 1 to 3 months',ar:'خلال 1 إلى 3 أشهر'},
+    {val:'planning',en:'Just planning for now',ar:'مجرد تخطيط في الوقت الحالي'}
+  ]},
+  {id:'notes',type:'textarea',
+   en:{q:'Anything else we should know?',howto:'Tell us anything relevant — opening a new office, had a security incident, have a server room, need cameras on the network, IT person available for site visit. Leave blank if nothing to add.',ph:'Optional — type here or leave blank'},
+   ar:{q:'هل هناك أي شيء آخر يجب أن نعرفه؟',howto:'أخبرنا بأي شيء ذي صلة — فتح مكتب جديد، تعرضتم لحادثة أمنية، لديكم غرفة خوادم، تحتاجون كاميرات على الشبكة. اتركه فارغاً إذا لم يكن هناك شيء.',ph:'اختياري — اكتب هنا أو اتركه فارغاً'}}
+];
+
+function t(key){ return tr[lang][key]; }
+function L(step, key){ return step[lang] ? step[lang][key] : step[key]; }
+
+function visible(){
+  return steps.filter(function(s){
+    return !s.skipIf || !s.skipIf(answers);
+  });
+}
+
+function render(){
+  var vis = visible();
+  var step = vis[current];
+  var pct = Math.round(((current+1)/vis.length)*100);
+  document.getElementById('prog').style.width = pct+'%';
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('prog-label').textContent = t('qof')+' '+(current+1)+' '+t('of')+' '+vis.length;
+
+  var q = L(step,'q');
+  var howto = L(step,'howto');
+  var ph = L(step,'ph') || '';
+
+  var html = '<div class="step-tag">'+t('qof')+' '+(current+1)+'</div>';
+  html += '<div class="question">'+q+'</div>';
+  html += '<div class="hint-box"><div class="hint-label">'+t('howto')+'</div><div class="hint-text">'+howto+'</div></div>';
+
+  if(step.type === 'choice'){
+    html += '<div class="options">';
+    step.options.forEach(function(o){
+      var label = lang==='ar' ? o.ar : o.en;
+      var sub = lang==='ar' ? (o.arsub||'') : (o.ensub||'');
+      var sel = answers[step.id]===o.val ? ' selected' : '';
+      html += '<button class="opt'+sel+'" data-val="'+o.val+'" data-id="'+step.id+'">';
+      html += '<span class="opt-radio"><span class="opt-dot"></span></span>';
+      html += '<span class="opt-body"><span>'+label+'</span>'+(sub?'<span class="opt-sub">'+sub+'</span>':'')+'</span></button>';
+    });
+    html += '</div>';
+  } else if(step.type === 'multi'){
+    html += '<div class="multi-note">'+t('multi')+'</div><div class="options">';
+    var cur = answers[step.id] || [];
+    step.options.forEach(function(o){
+      var label = lang==='ar' ? o.ar : o.en;
+      var chk = cur.indexOf(o.val)>-1 ? ' checked' : '';
+      html += '<button class="check-opt'+chk+'" data-val="'+o.val+'" data-id="'+step.id+'">';
+      html += '<span class="check-box"><span class="check-mark">✓</span></span><span>'+label+'</span></button>';
+    });
+    html += '</div>';
+  } else if(step.type === 'text'){
+    var val = (answers[step.id]||'').replace(/"/g,'&quot;');
+    html += '<input class="text-input" type="text" id="txt" value="'+val+'" placeholder="'+ph+'" data-id="'+step.id+'">';
+  } else if(step.type === 'textarea'){
+    html += '<textarea class="textarea-input" id="txt" placeholder="'+ph+'" data-id="'+step.id+'">'+(answers[step.id]||'')+'</textarea>';
+  }
+
+  var isLast = current===vis.length-1;
+  html += '<div class="nav">';
+  if(current>0) html += '<button class="btn-back" id="btn-back">'+t('back')+'</button>';
+  html += '<button class="btn-next" id="btn-next">'+(isLast?t('submit'):t('next'))+'</button>';
+  html += '</div>';
+  if(step.type!=='choice'){
+    html += '<div class="skip-wrap"><button class="skip-btn" id="btn-skip">'+(isLast?'':t('skip'))+'</button></div>';
+  }
+
+  document.getElementById('form-area').innerHTML = html;
+
+  document.querySelectorAll('.opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = this.getAttribute('data-id');
+      var val = this.getAttribute('data-val');
+      answers[id] = val;
+      document.querySelectorAll('.opt').forEach(function(b){ b.classList.remove('selected'); });
+      this.classList.add('selected');
+      setTimeout(nextStep, 300);
+    });
+  });
+
+  document.querySelectorAll('.check-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var id = this.getAttribute('data-id');
+      var val = this.getAttribute('data-val');
+      if(!answers[id]) answers[id]=[];
+      var idx = answers[id].indexOf(val);
+      if(idx>-1){ answers[id].splice(idx,1); this.classList.remove('checked'); }
+      else{ answers[id].push(val); this.classList.add('checked'); }
+    });
+  });
+
+  var inp = document.getElementById('txt');
+  if(inp){
+    inp.addEventListener('input', function(){ answers[this.getAttribute('data-id')] = this.value; });
+    if(inp.tagName==='INPUT'){
+      inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){e.preventDefault();nextStep();} });
+    }
+    inp.focus();
+    if(inp.tagName==='INPUT') inp.setSelectionRange(inp.value.length, inp.value.length);
+  }
+
+  var backBtn = document.getElementById('btn-back');
+  if(backBtn) backBtn.addEventListener('click', back);
+
+  var nextBtn = document.getElementById('btn-next');
+  if(nextBtn) nextBtn.addEventListener('click', isLast ? submitForm : nextStep);
+
+  var skipBtn = document.getElementById('btn-skip');
+  if(skipBtn) skipBtn.addEventListener('click', nextStep);
+}
+
+function nextStep(){
+  var vis = visible();
+  if(current < vis.length-1){ current++; render(); window.scrollTo(0,0); }
+}
+
+function back(){
+  if(current>0){ current--; render(); window.scrollTo(0,0); }
+}
+
+function toggleTheme(){
+  var h = document.documentElement;
+  var next = h.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  h.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+
+function toggleLang(){
+  lang = lang==='en' ? 'ar' : 'en';
+  var html = document.documentElement;
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
+  localStorage.setItem('lang', lang);
+  updateIntro();
+  document.getElementById('lang-btn').textContent = t('langBtn');
+  render();
+}
+
+function updateIntro(){
+  document.getElementById('i-eyebrow').textContent = t('eyebrow');
+  document.getElementById('i-title').innerHTML = t('title');
+  document.getElementById('i-body').textContent = t('body');
+  document.getElementById('i-s1').textContent = t('s1');
+  document.getElementById('i-s2').textContent = t('s2');
+  document.getElementById('i-s3').textContent = t('s3');
+  document.getElementById('i-time').textContent = t('time');
+  document.getElementById('i-link').innerHTML = t('link')+' <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>';
+}
+
+var savedTheme = localStorage.getItem('theme');
+if(savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+else if(window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme','dark');
+
+var savedLang = localStorage.getItem('lang');
+if(savedLang && savedLang==='ar'){
+  lang='ar';
+  document.documentElement.setAttribute('lang','ar');
+  document.documentElement.setAttribute('dir','rtl');
+  document.getElementById('lang-btn').textContent = t('langBtn');
+  updateIntro();
+}
+
+async function submitForm(){
+  var a = answers;
+  var lines = [
+    'NEW QUOTATION REQUEST — ATTAR SOFTWARE ENGINEERING',
+    '='.repeat(50),
+    'Name:         '+(a.contact_name||'—'),
+    'Company:      '+(a.company||'—'),
+    'Email:        '+(a.email||'—'),
+    'Phone:        '+(a.phone||'—'),
+    '',
+    'COMPANY PROFILE',
+    'Industry:     '+(a.industry||'—'),
+    'Employees:    '+(a.num_employees||'—'),
+    'Branches:     '+(a.num_branches||'—'),
+    'Internet:     '+(a.internet_speed||'—'),
+    '',
+    'CURRENT SETUP',
+    'Firewall:     '+(a.has_firewall||'—'),
+    'Model:        '+(a.firewall_brand||'N/A'),
+    'Remote work:  '+(a.remote_workers||'—'),
+    '',
+    'CONCERNS'
+  ];
+  if(Array.isArray(a.concerns)) a.concerns.forEach(function(c){ lines.push('  • '+c); });
+  else lines.push('  —');
+  lines.push('','COMMERCIAL','Budget:       '+(a.budget||'—'),'Timeline:     '+(a.timeline||'—'),'','NOTES',a.notes||'None');
+  var body = lines.join('\n');
+
+  document.getElementById('form-area').innerHTML = '<div class="loading-wrap"><div class="loading-spinner"></div><div class="loading-text">'+t('sending')+'</div></div>';
+
+  try{
+    var res = await fetch('https://formspree.io/f/YOUR_FORM_ID',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        _subject: 'Quote request — '+(a.company||'Unknown')+' · '+(a.num_employees||'?')+' employees',
+        name: a.contact_name,
+        _replyto: a.email,
+        company: a.company,
+        message: body
+      })
+    });
+    if(res.ok){
+      var firstName = (a.contact_name||'').split(' ')[0] || '';
+      document.getElementById('form-area').innerHTML = '<div class="success"><div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div><h2>'+t('successTitle')+', '+firstName+'!</h2><p>'+t('successBody')+'</p><p class="close-note">'+t('closeNote')+'</p></div>';
+    } else { throw new Error(); }
+  } catch(e){
+    document.getElementById('form-area').innerHTML = '<div class="success"><div class="success-icon" style="background:#c0392b"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><h2>'+t('errTitle')+'</h2><p>'+t('errBody')+'</p><pre style="text-align:left;font-size:12px;background:var(--hint-bg);border:1px solid var(--border);padding:1rem;border-radius:10px;margin-top:1.25rem;white-space:pre-wrap;color:var(--text-secondary);line-height:1.6;overflow-x:auto">'+body+'</pre></div>';
+  }
+}
+
+render();
+</script>
+</body>
+</html>
+
